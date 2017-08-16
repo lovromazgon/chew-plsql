@@ -22,24 +22,34 @@ func PlsqlNS() *PlsqlFuncMap {
 
 func init() {
 	funcmap.AddFunc(
-		funcmap.NewFunc(
-			PlsqlNS,
-			"plsql",
-			"TODO",
-			"TODO",
-			funcmap.NewNestedFuncDoc(
-				"ParameterType",
-				"TODO",
-				"TODO"),
-			funcmap.NewNestedFuncDoc(
-				"Comment",
-				"TODO",
-				"TODO"),
-			funcmap.NewNestedFuncDoc(
-				"Separator",
-				"TODO",
-				"TODO"),
-		))
+		&funcmap.Func{
+			Func: PlsqlNS,
+			Doc: funcmap.FuncDoc{
+				Name: "plsql",
+				Text: "PL/SQL related functions",
+
+				NestedFuncs: []funcmap.FuncDoc{
+					funcmap.FuncDoc{
+						Name: "ParameterType",
+						Text: "Takes a parameter type (\"in\", \"out\", \"in out\") and outputs the uppercase version of the" +
+							" parameter while padding it to 6 characters with spaces, so it's always aligned the same way.",
+						Example: "{{ plsql.ParameterType \"in\" }}",
+					},
+					funcmap.FuncDoc{
+						Name: "Comment",
+						Text: "Takes a multi-line string and prepends dashes so it is considered as a comment in PL/SQL." +
+							" It also indents the comment with spaces.",
+						Example: "{{ plsql.Comment \"My comment can be\n multiple lines\n long\" 2 }}",
+					},
+					funcmap.FuncDoc{
+						Name: "Separator",
+						Text: "Outputs a separator for use between procedures and functions:\n" +
+							"--------------------------------------------------------------------",
+						Example: "{{ plsql.Separator }}",
+					},
+				},
+			},
+		})
 }
 
 type PlsqlFuncMap struct{}
